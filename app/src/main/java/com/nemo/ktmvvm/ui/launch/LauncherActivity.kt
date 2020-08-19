@@ -11,7 +11,6 @@ import com.nemo.ktmvvm.R
 import com.nemo.ktmvvm.config.SpKey
 import com.nemo.ktmvvm.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_launcher.*
-import me.goldze.mvvmhabit.utils.SPUtils
 
 
 class LauncherActivity : AppCompatActivity() {
@@ -36,7 +35,6 @@ class LauncherActivity : AppCompatActivity() {
                 listOf("老虎", "天鹅", "狗"))
 
         banner.setEnterSkipViewIdAndDelegate(R.id.btn_guide_enter, R.id.tv_guide_skip) {
-            SPUtils.getInstance().put(SpKey.IS_FIRST,false)
             startActivity(Intent(this@LauncherActivity, MainActivity::class.java))
             finish()
         }

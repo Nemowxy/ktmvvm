@@ -15,8 +15,8 @@ import com.nemo.ktmvvm.ui.main.MainViewModel
  */
 class AppViewModelFactory(private val mApplication: Application) : ViewModelProvider.NewInstanceFactory() {
 
-    private lateinit var mUserRepository: UserApiClientImpl
-    private lateinit var mMainRepository: MainApiClientImpl
+    private var mUserRepository: UserApiClientImpl? = null
+    private var mMainRepository: MainApiClientImpl? = null
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
             return LoginViewModel(mApplication, mUserRepository) as T
@@ -26,7 +26,7 @@ class AppViewModelFactory(private val mApplication: Application) : ViewModelProv
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
 
-    constructor(mApplication: Application, mUserRepository: UserApiClientImpl, mMainRepository: MainApiClientImpl) : this(mApplication) {
+    constructor(mApplication: Application, mUserRepository: UserApiClientImpl?, mMainRepository: MainApiClientImpl?) : this(mApplication) {
         this.mUserRepository = mUserRepository
         this.mMainRepository = mMainRepository
     }

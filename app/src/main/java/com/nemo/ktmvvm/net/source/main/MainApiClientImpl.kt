@@ -4,12 +4,11 @@ import com.nemo.ktmvvm.net.HttpResult
 import com.nemo.ktmvvm.net.entity.ArticleEntity
 import com.nemo.ktmvvm.net.entity.BannerEntity
 import io.reactivex.Observable
-import me.goldze.mvvmhabit.base.BaseModel
 
 /**
  * Created by goldze on 2019/3/26.
  */
-class MainApiClientImpl private constructor(apiService: MainApiService) : BaseModel(), MainApiClient {
+class MainApiClientImpl private constructor(apiService: MainApiService) : MainApiClient {
     private val apiService: MainApiService = apiService
 
     companion object {
@@ -35,8 +34,8 @@ class MainApiClientImpl private constructor(apiService: MainApiService) : BaseMo
         return apiService.getBanner()
     }
 
-    override fun articleList(): Observable<HttpResult<List<ArticleEntity>>> {
-        return apiService.articleList()
+    override fun articleList(): Observable<HttpResult<ArticleEntity>> {
+        return apiService.articleList(0)
     }
 
 }

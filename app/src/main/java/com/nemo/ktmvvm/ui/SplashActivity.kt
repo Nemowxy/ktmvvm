@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.nemo.ktmvvm.config.SpKey
 import com.nemo.ktmvvm.ui.launch.LauncherActivity
 import com.nemo.ktmvvm.ui.main.MainActivity
-import me.goldze.mvvmhabit.utils.SPUtils
+import com.nemo.ktmvvm.utils.SPUtils
 
 class SplashActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {

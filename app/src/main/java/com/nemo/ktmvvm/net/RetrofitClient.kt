@@ -1,24 +1,17 @@
 package com.nemo.ktmvvm.net
 
 import android.text.TextUtils
-import com.nemo.ktmvvm.BuildConfig
+import android.util.Log
 import com.nemo.ktmvvm.config.GlobalConfig
+import com.nemo.ktmvvm.utils.Utils
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import me.goldze.mvvmhabit.http.cookie.CookieJarImpl
-import me.goldze.mvvmhabit.http.cookie.store.PersistentCookieStore
-import me.goldze.mvvmhabit.http.interceptor.BaseInterceptor
-import me.goldze.mvvmhabit.http.interceptor.CacheInterceptor
-import me.goldze.mvvmhabit.http.interceptor.logging.Level
-import me.goldze.mvvmhabit.http.interceptor.logging.LoggingInterceptor
-import me.goldze.mvvmhabit.utils.KLog
-import me.goldze.mvvmhabit.utils.Utils
 import okhttp3.Cache
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
-import okhttp3.internal.platform.Platform
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -97,31 +90,17 @@ class RetrofitClient private constructor(
                 cache = Cache(httpCacheDirectory, GlobalConfig.CACHE_TIMEOUT.toLong())
             }
         } catch (e: Exception) {
-            KLog.e("Could not create http cache", e)
+            Log.e("Nemo","Could not create http cache", e)
         }
         val sslParams = HttpsUtils.getSslSocketFactory()
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
         okHttpClient = OkHttpClient.Builder()
-            .cookieJar(CookieJarImpl(PersistentCookieStore(mContext))) //                .cache(cache)
-            .addInterceptor(BaseInterceptor(headers))
-            .addInterceptor(CacheInterceptor(mContext))
             .sslSocketFactory(sslParams!!.sSLSocketFactory, sslParams.trustManager)
-            .addInterceptor(
-                LoggingInterceptor.Builder() //构建者模式
-                    .loggable(BuildConfig.DEBUG) //是否开启日志打印
-                    .setLevel(Level.BASIC) //打印的等级
-                    .log(Platform.INFO) // 打印类型
-                    .request("Request") // request的Tag
-                    .response("Response") // Response的Tag
-                    .addHeader(
-                        "log-header",
-                        "I am the log request header."
-                    ) // 添加打印头, 注意 key 和 value 都不能是中文
-                    .build()
-            )
             .connectTimeout(
                     GlobalConfig.DEFAULT_TIMEOUT.toLong(),
                 TimeUnit.SECONDS
-            )
+            ).addInterceptor(logging)
             .writeTimeout(
                     GlobalConfig.DEFAULT_TIMEOUT.toLong(),
                 TimeUnit.SECONDS

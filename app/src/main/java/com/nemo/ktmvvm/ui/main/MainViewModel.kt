@@ -2,26 +2,24 @@ package com.nemo.ktmvvm.ui.main
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import com.azhon.basic.lifecycle.BaseViewModel
+import com.nemo.ktmvvm.net.entity.ArticleEntity
 import com.nemo.ktmvvm.net.entity.BannerEntity
 import com.nemo.ktmvvm.net.source.main.MainApiClientImpl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import me.goldze.mvvmhabit.base.BaseViewModel
-import me.goldze.mvvmhabit.bus.event.SingleLiveEvent
 
 
+class MainViewModel(application: Application, model: MainApiClientImpl?) : BaseViewModel() {
 
+    var bannerEntity = MutableLiveData<List<BannerEntity>>()
+    var listArticle = MutableLiveData<ArticleEntity>()
 
-class MainViewModel(application: Application, model: MainApiClientImpl?) : BaseViewModel<MainApiClientImpl>(application, model) {
-
-    var bannerEntity = SingleLiveEvent<List<BannerEntity>>()
-
-    override fun onCreate() {
-        super.onCreate()
-        Log.d(TAG, "onCreate: " + (model == null))
-        model!!.getBanner()
+    init {
+        val subscribe = model!!.getBanner()
                 .map { s ->
-                    Log.d(TAG, "apply: " + s.toString())
+                    Log.d(TAG, "apply: $s")
                     s.data
                 }
                 .subscribeOn(Schedulers.io())
@@ -32,7 +30,7 @@ class MainViewModel(application: Application, model: MainApiClientImpl?) : BaseV
                             bannerEntity.value = it
                         },
                         {
-                            Log.d(TAG, "onError: " + it.toString())
+                            Log.d(TAG, "onError: $it")
                         },
                         {
                             Log.d(TAG, "onComplete: ")
@@ -41,6 +39,14 @@ class MainViewModel(application: Application, model: MainApiClientImpl?) : BaseV
                             Log.d(TAG, "onSubscribe: ")
                         }
                 )
+//
+        model.articleList()
+                .map{
+                    s -> s.data
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { listArticle.value = it }
     }
 
     companion object {
