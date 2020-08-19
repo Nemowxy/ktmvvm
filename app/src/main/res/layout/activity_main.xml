@@ -10,34 +10,20 @@
             type="com.nemo.ktmvvm.ui.main.MainViewModel" />
     </data>
 
-   <androidx.coordinatorlayout.widget.CoordinatorLayout
+   <LinearLayout
+       android:orientation="vertical"
        android:layout_width="match_parent"
        android:layout_height="match_parent">
-       <com.google.android.material.appbar.AppBarLayout
+       <androidx.viewpager2.widget.ViewPager2
+           android:id="@+id/view_pager"
            android:layout_width="match_parent"
-           android:layout_height="200dp">
+           android:layout_weight="1"
+           android:layout_height="0dp"/>
 
-           <com.google.android.material.appbar.CollapsingToolbarLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content">
-               <cn.bingoogolapple.bgabanner.BGABanner
-                   android:id="@+id/banner"
-                   android:layout_width="match_parent"
-                   android:layout_height="200dp"
-                   app:banner_pageChangeDuration="1000"
-                   app:banner_pointAutoPlayAble="false"
-                   app:banner_pointContainerBackground="@android:color/transparent"
-                   app:banner_pointDrawable="@drawable/selector_banner_unequal"
-                   app:banner_pointTopBottomMargin="15dp"
-                   app:banner_transitionEffect="fade" />
-
-
-           </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-       </com.google.android.material.appbar.AppBarLayout>
-       <androidx.recyclerview.widget.RecyclerView
-           android:id="@+id/rv_news"
+       <com.google.android.material.bottomnavigation.BottomNavigationView
+           android:id="@+id/bottom_view"
            android:layout_width="match_parent"
-           android:layout_height="wrap_content" />
-   </androidx.coordinatorlayout.widget.CoordinatorLayout>
+           app:menu="@menu/navigation"
+           android:layout_height="50dp"/>
+   </LinearLayout>
 </layout>

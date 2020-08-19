@@ -42,14 +42,14 @@ public abstract class BaseNoModelFragment<DB extends ViewDataBinding> extends Fr
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        dataBinding = initDataBinding(inflater, onCreate(), container);
+        activity = getActivity();
+        dataBinding = initDataBinding(inflater, initContentView(), container);
         return dataBinding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        activity = getActivity();
         initView();
         initData();
     }
@@ -57,7 +57,7 @@ public abstract class BaseNoModelFragment<DB extends ViewDataBinding> extends Fr
     /**
      * 初始化要加载的布局资源ID
      */
-    protected abstract int onCreate();
+    protected abstract int initContentView();
 
 
     /**

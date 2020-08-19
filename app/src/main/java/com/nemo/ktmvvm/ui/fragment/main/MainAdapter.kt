@@ -1,4 +1,4 @@
-package com.nemo.ktmvvm.ui.main
+package com.nemo.ktmvvm.ui.fragment.main
 
 import com.azhon.basic.adapter.BaseDBRVAdapter
 import com.nemo.ktmvvm.BR
